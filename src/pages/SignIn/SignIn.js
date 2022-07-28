@@ -1,7 +1,9 @@
 import { Container, Content } from './style';
-import { WhiteLogo } from '../../assets/components/Logo/WhiteLogo';
-import Input from '../../assets/components/FormComponent/Input';
+import { WhiteLogo } from '../../components/Logo/WhiteLogo';
+import Input from '../../components/FormComponent/Input';
 import { Box } from '@mui/material';
+import { useState } from 'react';
+import useForm from '../../hooks/useForm';
 
 const styles = {
   container: {
@@ -19,6 +21,16 @@ const styles = {
 };
 
 export function SignIn() {
+  const { setForm, form } = useForm();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  function handleInputChange(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
   return (
     <Container >
       <Content >
@@ -29,16 +41,18 @@ export function SignIn() {
               label='email'
               placeholder='Email'
               name='email'
-              value={''}
+              value={form.email}
               type='noButton'
+              onChange={handleInputChange}
             />
 
             <Input
               label='password'
               placeholder='Senha'
               name='password'
-              value={''}
+              value={form.password}
               type='withButton'
+              onChange={handleInputChange}
             />
           </Box>
         </Box>
