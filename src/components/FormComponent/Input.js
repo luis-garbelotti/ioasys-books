@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
-import * as React from 'react';
+import { useState } from 'react';
+
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
+
 import SignInButton from './Button';
 
 const RedditTextField = styled((props) => (
@@ -35,6 +37,9 @@ const styles = {
 };
 
 export default function Input({ label, placeholder, name, value, onChange, type }) {
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+
   return (
     type === 'noButton' ?
       <RedditTextField
@@ -60,7 +65,8 @@ export default function Input({ label, placeholder, name, value, onChange, type 
         InputLabelProps={{
           style: styles.label,
         }}
-        InputProps={{ endAdornment: <SignInButton />, disableUnderline: true }}
+        InputProps={{ endAdornment: <SignInButton setOpen={setOpen} setMessage={setMessage} />, disableUnderline: true }}
       />
+
   );
 }

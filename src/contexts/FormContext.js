@@ -9,12 +9,21 @@ export function FormProvider({ children }) {
     password: '',
   });
 
+  function onSubmit(setIsLoading) {
+    if (!form.email || !form.password) {
+      setIsLoading(false);
+      return { message: 'Preencha todos os campos.' };
+    }
+    setIsLoading(false);
+    alert('deu');
+  }
+
   function SetForm(formData) {
     setForm(formData);
   }
 
   return (
-    <FormContext.Provider value={{ form, setForm, SetForm }}>
+    <FormContext.Provider value={{ form, setForm, SetForm, onSubmit }}>
       {children}
     </FormContext.Provider>
   );

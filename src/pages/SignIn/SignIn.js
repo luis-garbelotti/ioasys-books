@@ -2,7 +2,6 @@ import { Container, Content } from './style';
 import { WhiteLogo } from '../../components/Logo/WhiteLogo';
 import Input from '../../components/FormComponent/Input';
 import { Box } from '@mui/material';
-import { useState } from 'react';
 import useForm from '../../hooks/useForm';
 
 const styles = {
@@ -22,10 +21,6 @@ const styles = {
 
 export function SignIn() {
   const { setForm, form } = useForm();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
 
   function handleInputChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -57,6 +52,6 @@ export function SignIn() {
           </Box>
         </Box>
       </Content>
-    </Container>
+    </Container >
   );
 }
