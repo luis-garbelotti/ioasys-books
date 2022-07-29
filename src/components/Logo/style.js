@@ -4,8 +4,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
 
-  gap: 16.6px;
-
   div {
     display: flex;
     align-items: center;
@@ -23,8 +21,23 @@ const Container = styled.div`
   }
 `;
 
-const DarkLogo = styled.img`
-  filter: invert();
+const DarkLogo = styled.div`
+  gap: 16.6px;
+
+  img {
+    filter: invert();
+  }
+
+  h1 {
+    height: 24px;
+    
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 0em;
+    text-align: left;
+
+    color: #333333;
+  }
 `;
 
 export {

@@ -50,17 +50,20 @@ export default function SignInButton() {
       setIsLoading(false);
       return;
     }
+    try {
+      const promise = await onSubmit(setOpen, setIsLoading, setMessage);
 
-    const promise = await onSubmit(setOpen, setIsLoading, setMessage);
+      login({
+        ...promise.data,
+        token: promise.headers.authorization,
+        refresh_token: promise.headers['refresh-token']
+      });
 
-    login({
-      ...promise.data,
-      token: promise.headers.authorization,
-      refresh_token: promise.headers['refresh-token']
-    });
-
-    setIsLoading(false);
-    navigate('/home');
+      setIsLoading(false);
+      navigate('/home');
+    } catch (error) {
+      setIsLoading(false);
+    }
   }
 
   return (

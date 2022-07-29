@@ -3,6 +3,9 @@ import { WhiteLogo } from '../../components/Logo/WhiteLogo';
 import Input from '../../components/FormComponent/Input';
 import { Box } from '@mui/material';
 import useForm from '../../hooks/useForm';
+import useAuth from '../../hooks/useAuth';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const styles = {
   container: {
@@ -21,6 +24,14 @@ const styles = {
 
 export function SignIn() {
   const { setForm, form } = useForm();
+  const { auth } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth) {
+      navigate('/home');
+    }
+  }, []);
 
   function handleInputChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });

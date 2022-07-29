@@ -17,16 +17,17 @@ export function FormProvider({ children }) {
 
       return promise;
     } catch (error) {
+      console.log(error);
       if (error.response.status === 401) {
         setOpen(true);
-        setMessage(errors.messa);
+        setMessage('Email e/ou senha incorretos.');
         setIsLoading(false);
         return;
       }
 
       if (error.response.status === 500) {
         setOpen(true);
-        setMessage('.');
+        setMessage('Infelizmente, algo deu errado.');
         setIsLoading(false);
         return;
       }

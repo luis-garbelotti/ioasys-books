@@ -11,6 +11,7 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<SignIn />} />
+            <Route path='/home' element={<Home />} />
           </Routes>
         </BrowserRouter>
       </FormProvider>
