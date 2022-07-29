@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react';
 import PropTypes from 'prop-types';
+import api from '../services/api';
 
 const FormContext = createContext();
 
@@ -8,14 +9,28 @@ export function FormProvider({ children }) {
     email: '',
     password: '',
   });
+  const [tokens, setTokens] = useState({});
 
-  function onSubmit(setIsLoading) {
-    if (!form.email || !form.password) {
-      setIsLoading(false);
-      return { message: 'Preencha todos os campos.' };
+  async function onSubmit(setOpen, setIsLoading, setMessage) {
+    try {
+      const promise = await api.signIn(form);
+
+      return promise;
+    } catch (error) {
+      if (error.response.status === 401) {
+        setOpen(true);
+        setMessage(errors.messa);
+        setIsLoading(false);
+        return;
+      }
+
+      if (error.response.status === 500) {
+        setOpen(true);
+        setMessage('.');
+        setIsLoading(false);
+        return;
+      }
     }
-    setIsLoading(false);
-    alert('deu');
   }
 
   function SetForm(formData) {
@@ -23,7 +38,7 @@ export function FormProvider({ children }) {
   }
 
   return (
-    <FormContext.Provider value={{ form, setForm, SetForm, onSubmit }}>
+    <FormContext.Provider value={{ form, setForm, SetForm, onSubmit, tokens, setTokens }}>
       {children}
     </FormContext.Provider>
   );

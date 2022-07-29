@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useForm from '../../hooks/useForm';
+import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
@@ -8,7 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { Box } from '@mui/system';
 
-import PropTypes from 'prop-types';
+import useAuth from '../../hooks/useAuth';
 
 const ColorButton = styled(LoadingButton)(() => ({
   width: '85px',
@@ -27,8 +28,10 @@ const ColorButton = styled(LoadingButton)(() => ({
   },
 }));
 
-export default function SignInButton({ handleSubmit }) {
+export default function SignInButton() {
   const { form, onSubmit } = useForm();
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
@@ -37,16 +40,27 @@ export default function SignInButton({ handleSubmit }) {
     setOpen(false);
   };
 
-  function handleOnSubmit(e) {
+  async function handleOnSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
 
-    const response = onSubmit(setIsLoading);
-
-    if (response.message === 'Email e/ou senha incorretos.') {
+    if (!form.email || !form.password) {
       setOpen(true);
-      setMessage(response.message);
+      setMessage('Preencha todos os campos corretamente');
+      setIsLoading(false);
+      return;
     }
+
+    const promise = await onSubmit(setOpen, setIsLoading, setMessage);
+
+    login({
+      ...promise.data,
+      token: promise.headers.authorization,
+      refresh_token: promise.headers['refresh-token']
+    });
+
+    setIsLoading(false);
+    navigate('/home');
   }
 
   return (
@@ -73,7 +87,7 @@ export default function SignInButton({ handleSubmit }) {
           }
         }}
         onClose={handleTooltipClose}
-        open={true}
+        open={open}
         disableFocusListener
         disableHoverListener
         disableTouchListener
@@ -96,7 +110,3 @@ export default function SignInButton({ handleSubmit }) {
     </ClickAwayListener >
   );
 }
-
-SignInButton.propTypes = {
-  handleSubmit: PropTypes.any
-};
