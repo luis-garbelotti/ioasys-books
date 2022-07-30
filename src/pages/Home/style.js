@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import img from '../../assets/images/homeBg.png';
 
 const Container = styled.div`
-  width: 100vw;
+  width: 100%;
   height: auto;
   background-image: url(${img});
   background-repeat: no-repeat;
@@ -66,7 +66,7 @@ const HeaderText = styled.h1`
 const Content = styled.div`
   width: 100%;
   height: 100%;
-  padding: 42px 6%;
+  padding: 42px 5.5%;
 
   @media(max-width: 576px) {
     padding: 42px auto;
@@ -87,6 +87,8 @@ const Book = styled.div`
   width: 272px;
   height: 160px;
   padding: 19px 16px;
+  
+  cursor: pointer;
 
   background-color: #fff;
   border-radius: 4px;
