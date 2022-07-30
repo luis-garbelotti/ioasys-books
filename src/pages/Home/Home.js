@@ -8,6 +8,7 @@ import api from '../../services/api';
 import undefinedImage from '../../assets/images/undefined.png';
 import { NextButton } from '../../components/HomeButtons/NextButton';
 import { BackButton } from '../../components/HomeButtons/BackButton';
+import Swal from 'sweetalert2';
 
 export function Home() {
   const { auth, logout } = useAuth();
@@ -17,6 +18,7 @@ export function Home() {
   const [booksData, setBooksData] = useState();
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [isLastPage, setIsLastPage] = useState(false);
+  const [nextDisabled, setNextDisabled] = useState(false);
 
   // eslint-disable-next-line space-before-function-paren
   useEffect(async () => {
@@ -29,22 +31,22 @@ export function Home() {
   }, []);
 
   async function findBooks() {
-    let pages;
+    let maxPages;
 
     try {
       const promise = await api.getBooks(pageNumber, auth.token);
-      let page = promise.data.page;
+      let page = promise.page;
 
-      setBooksData(promise.data.data);
+      setBooksData(promise.data);
 
-      const pageRound = Math.floor(promise.data.totalPages);
-      if (pageRound < promise.data.totalPages) {
-        pages = pageRound + 1;
+      const pageRound = Math.floor(promise.totalPages);
+      if (pageRound < promise.totalPages) {
+        maxPages = pageRound + 1;
       } else {
-        pages = pageRound;
+        maxPages = pageRound;
       }
 
-      handlePages(page, pages);
+      handlePages(page, maxPages);
     } catch (error) {
       // se erro 401, refresh-token
     }
@@ -54,7 +56,7 @@ export function Home() {
     setPageNumber(page);
     setTotalPages(maxPages);
 
-    if (pageNumber !== 1) {
+    if (page !== 1) {
       setIsFirstPage(false);
     }
     if (pageNumber === maxPages) {
@@ -65,6 +67,52 @@ export function Home() {
   function handleLogout() {
     logout();
     navigate('/');
+  }
+
+  async function handleNextPage(e) {
+    e.preventDefault();
+
+    if (pageNumber === totalPages) {
+      setNextDisabled(true);
+      setIsLastPage(true);
+      return;
+    }
+
+    const nextPage = pageNumber + 1;
+    try {
+      const promise = await api.nextPage(nextPage, auth.token);
+      setBooksData(promise.data);
+
+      handlePages(promise.page, totalPages);
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 400) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '"Authorization" header is missing',
+        });
+        return;
+      }
+
+      if (error.response.status === 500) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Infelizmente, algo deu errado.',
+        });
+        return;
+      }
+
+      if (error.response.status === 401) { // refresh-token
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Não autorizado.',
+        });
+        return;
+      }
+    }
   }
 
   return (
@@ -117,8 +165,8 @@ export function Home() {
               <h1>Página {pageNumber} de {totalPages}</h1> : ''
             }
             <FooterButtons >
-              <BackButton isFirstPage={isFirstPage} />
-              <NextButton isLastPage={isLastPage} />
+              <BackButton isFirstPage={isFirstPage} /* onClick={handleBackPage} */ />
+              <NextButton isLastPage={isLastPage} onClick={handleNextPage} disabled={nextDisabled} />
             </FooterButtons>
           </Footer>
         </Content>

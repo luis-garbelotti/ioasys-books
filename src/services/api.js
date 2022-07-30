@@ -19,12 +19,19 @@ async function signIn(body) {
 async function getBooks(page, token) {
   const promise = await axios.get(`${BASE_URL}/books?page=${page}&amount=12`, createConfig(token));
 
-  return promise;
+  return promise.data;
+}
+
+async function nextPage(page, token) {
+  const promise = await axios.get(`${BASE_URL}/books?page=${page}&amount=12`, createConfig(token));
+
+  return promise.data;
 }
 
 const api = {
   signIn,
-  getBooks
+  getBooks,
+  nextPage,
 };
 
 export default api;
