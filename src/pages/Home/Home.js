@@ -15,6 +15,8 @@ export function Home() {
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [booksData, setBooksData] = useState();
+  const [isFirstPage, setIsFirstPage] = useState(true);
+  const [isLastPage, setIsLastPage] = useState(false);
 
   // eslint-disable-next-line space-before-function-paren
   useEffect(async () => {
@@ -28,8 +30,11 @@ export function Home() {
 
   async function findBooks() {
     let pages;
+
     try {
       const promise = await api.getBooks(pageNumber, auth.token);
+      let page = promise.data.page;
+
       setBooksData(promise.data.data);
 
       const pageRound = Math.floor(promise.data.totalPages);
@@ -39,10 +44,21 @@ export function Home() {
         pages = pageRound;
       }
 
-      setPageNumber(promise.data.page);
-      setTotalPages(pages);
+      handlePages(page, pages);
     } catch (error) {
       // se erro 401, refresh-token
+    }
+  }
+
+  function handlePages(page, maxPages) {
+    setPageNumber(page);
+    setTotalPages(maxPages);
+
+    if (pageNumber !== 1) {
+      setIsFirstPage(false);
+    }
+    if (pageNumber === maxPages) {
+      setIsLastPage(true);
     }
   }
 
@@ -96,13 +112,13 @@ export function Home() {
                 </Book>
               )}
           </BooksContainer>
-          <Footer>
+          <Footer >
             {totalPages && pageNumber ?
               <h1>Página {pageNumber} de {totalPages}</h1> : ''
             }
             <FooterButtons >
-              <BackButton />
-              <NextButton />
+              <BackButton isFirstPage={isFirstPage} />
+              <NextButton isLastPage={isLastPage} />
             </FooterButtons>
           </Footer>
         </Content>
