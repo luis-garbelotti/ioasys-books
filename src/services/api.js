@@ -22,7 +22,7 @@ async function getBooks(page, token) {
   return promise.data;
 }
 
-async function nextPage(page, token) {
+async function changePage(page, token) {
   const promise = await axios.get(`${BASE_URL}/books?page=${page}&amount=12`, createConfig(token));
 
   return promise.data;
@@ -31,7 +31,7 @@ async function nextPage(page, token) {
 const api = {
   signIn,
   getBooks,
-  nextPage,
+  changePage,
 };
 
 export default api;

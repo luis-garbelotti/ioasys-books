@@ -1,4 +1,11 @@
-import { Book, BookAuthor, BookContent, BookData, BookInfo, BooksContainer, BookTitle, Container, Content, Footer, FooterButtons, Header, HeaderInfos, HeaderText, Logout } from './style';
+import {
+  Book, BookAuthor, BookContent, BookData,
+  BookInfo, BooksContainer, BookTitle,
+  Container, Content,
+  Footer, FooterButtons,
+  Header, HeaderInfos, HeaderText,
+  Logout
+} from './style';
 import { BlackLogo } from '../../components/Logo/BlackLogo';
 import useAuth from '../../hooks/useAuth';
 import { useEffect, useState } from 'react';
@@ -19,6 +26,7 @@ export function Home() {
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [isLastPage, setIsLastPage] = useState(false);
   const [nextDisabled, setNextDisabled] = useState(false);
+  const [backDisabled, setBackDisabled] = useState(true);
 
   // eslint-disable-next-line space-before-function-paren
   useEffect(async () => {
@@ -64,24 +72,33 @@ export function Home() {
     }
   }
 
-  function handleLogout() {
-    logout();
-    navigate('/');
-  }
-
-  async function handleNextPage(e) {
+  async function handleChangePage(e, newPage) {
     e.preventDefault();
 
-    if (pageNumber === totalPages) {
-      setNextDisabled(true);
-      setIsLastPage(true);
+    if (newPage === 0) {
       return;
     }
 
-    const nextPage = pageNumber + 1;
+    if (newPage === totalPages + 1) {
+      return;
+    }
+
+    if (pageNumber === 1 || newPage === 1) {
+      setIsFirstPage(true);
+      setBackDisabled(true);
+    }
+
+    if (newPage === totalPages) {
+      setNextDisabled(true);
+      setIsLastPage(true);
+    }
+
+    const nextPage = newPage;
     try {
-      const promise = await api.nextPage(nextPage, auth.token);
+      const promise = await api.changePage(nextPage, auth.token);
       setBooksData(promise.data);
+      setBackDisabled(false);
+      setNextDisabled(false);
 
       handlePages(promise.page, totalPages);
     } catch (error) {
@@ -90,7 +107,7 @@ export function Home() {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: '"Authorization" header is missing',
+          text: `${error.response.data.errors.message}`,
         });
         return;
       }
@@ -99,7 +116,7 @@ export function Home() {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Infelizmente, algo deu errado.',
+          text: `${error.response.data.errors.message}`,
         });
         return;
       }
@@ -108,11 +125,16 @@ export function Home() {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Não autorizado.',
+          text: `${error.response.data.errors.message}`,
         });
         return;
       }
     }
+  }
+
+  function handleLogout() {
+    logout();
+    navigate('/');
   }
 
   return (
@@ -165,8 +187,14 @@ export function Home() {
               <h1>Página {pageNumber} de {totalPages}</h1> : ''
             }
             <FooterButtons >
-              <BackButton isFirstPage={isFirstPage} /* onClick={handleBackPage} */ />
-              <NextButton isLastPage={isLastPage} onClick={handleNextPage} disabled={nextDisabled} />
+              <BackButton
+                isFirstPage={isFirstPage}
+                onClick={(e) => handleChangePage(e, pageNumber - 1)}
+                disabled={backDisabled} />
+              <NextButton
+                isLastPage={isLastPage}
+                onClick={(e) => handleChangePage(e, pageNumber + 1)}
+                disabled={nextDisabled} />
             </FooterButtons>
           </Footer>
         </Content>
