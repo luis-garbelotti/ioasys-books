@@ -79,7 +79,7 @@ export function Home() {
       }
 
       if (error.response.status === 401) {
-        refreshToken();
+        await refreshToken();
       }
     }
   }
@@ -146,7 +146,7 @@ export function Home() {
       }
 
       if (error.response.status === 401) {
-        refreshToken();
+        await refreshToken();
       }
     }
   }
@@ -179,7 +179,7 @@ export function Home() {
       }
 
       if (error.response.status === 401) {
-        refreshToken();
+        await refreshToken();
       }
     }
   }
@@ -203,7 +203,7 @@ export function Home() {
       };
 
       const promise = await api.refreshToken(body);
-
+      console.log(promise);
       const newAuth = {
         ...auth,
         token: promise.authorization,
@@ -212,12 +212,8 @@ export function Home() {
 
       login(newAuth);
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: `${error.response.data.errors.message}`,
-      });
-      return;
+      logout();
+      navigate('/');
     }
   }
 
