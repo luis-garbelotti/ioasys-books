@@ -19,7 +19,7 @@ import Swal from 'sweetalert2';
 import { OpenedBook } from '../../components/OpenedBook/OpenedBook';
 
 export function Home() {
-  const { auth, logout } = useAuth();
+  const { auth, logout, login } = useAuth();
   const navigate = useNavigate();
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState();
@@ -78,13 +78,8 @@ export function Home() {
         return;
       }
 
-      if (error.response.status === 401) { // refresh-token
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: `${error.response.data.errors.message}`,
-        });
-        return;
+      if (error.response.status === 401) {
+        refreshToken();
       }
     }
   }
@@ -149,13 +144,8 @@ export function Home() {
         return;
       }
 
-      if (error.response.status === 401) { // refresh-token
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: `${error.response.data.errors.message}`,
-        });
-        return;
+      if (error.response.status === 401) {
+        refreshToken();
       }
     }
   }
@@ -187,13 +177,8 @@ export function Home() {
         return;
       }
 
-      if (error.response.status === 401) { // refresh-token
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: `${error.response.data.errors.message}`,
-        });
-        return;
+      if (error.response.status === 401) {
+        refreshToken();
       }
     }
   }
@@ -209,6 +194,31 @@ export function Home() {
       formatedAuthors += authors[i] + ', ';
     }
   };
+
+  async function refreshToken() {
+    try {
+      const body = {
+        refreshToken: auth['refresh_token']
+      };
+
+      const promise = await api.refreshToken(body);
+
+      const newAuth = {
+        ...auth,
+        token: promise.authorization,
+        refresh_token: promise['refresh-token']
+      };
+
+      login(newAuth);
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `${error.response.data.errors.message}`,
+      });
+      return;
+    }
+  }
 
   function handleLogout() {
     logout();

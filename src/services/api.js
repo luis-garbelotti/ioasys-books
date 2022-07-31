@@ -34,11 +34,18 @@ async function getBookInfo(bookId, token) {
   return promise.data;
 }
 
+async function refreshToken(body) {
+  const promise = await axios.post(`${BASE_URL}/auth/refresh-token`, body);
+
+  return promise.headers;
+}
+
 const api = {
   signIn,
   getBooks,
   changePage,
   getBookInfo,
+  refreshToken,
 };
 
 export default api;
