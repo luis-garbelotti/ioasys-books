@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+** Aplicação construida como parte do processo seletivo - Ioasys
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 >  Ioasys Books  🔗  &nbsp  </h1><br>
 
-## Available Scripts
+<div align="center">
+  <a href="https://ioasys-books-amber.vercel.app">
+    <img  width="100" src="./src/assets/images/Logo.png">
+  </a>
+  <h1>Books</h1>
+  <p align="center">Try it:</p>
+  <p align="center">
+    <a  href="https://ioasys-books-amber.vercel.app">Ioasys Books - vercel</a>
+  </p>
+</div>
 
-In the project directory, you can run:
+##  :link: About
 
-### `npm start`
+Ioasys Books is an application to find information about different books!
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## :hammer: Features
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+:ballot_box_with_check: `Sign In` - Login with email and password.
 
-### `npm test`
+:ballot_box_with_check: `Book List` - Navigate between pages to search for a book.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+:ballot_box_with_check: `Book Infos` - Click in a book to see all its information.
 
-### `npm run build`
+:ballot_box_with_check: `Sign Out` - Logout from app.
+## :woman_technologist: Technologies
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<p align="center">
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
+<img src="https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white" />
+<img src="https://img.shields.io/badge/MUI-00ABF7?style=for-the-badge&logo=mui&logoColor=white" />
+<img src="https://img.shields.io/badge/axios-black?style=for-the-badge&logo=axios&logoColor=white" />
+<img src="https://img.shields.io/badge/cypress-white?style=for-the-badge&logo=cypress&logoColor=black" />
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+</p>
+<br>  
 
-### `npm run eject`
+## :tada: How to run
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+# Clone this repo
+$ git clone git@github.com:luis-garbelotti/ioasys-books.git
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Clone the back-end repository and follow the instructions to run
+$ git clone https://github.com/starunz/Linkr-Backend.git
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# change to project directory
+$ cd ioasys-books
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# install the dependencies
+$ npm or yarn install
 
-## Learn More
+# set .env file (follow .env.example) with the URL bellow
+https://books.ioasys.com.br/api/v1
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# to run in dev
+$ npm start
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# you can try tests with cypress
+$ npx cypress open
+```
