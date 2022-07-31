@@ -6,16 +6,14 @@ import {
   Book, BookAuthor, BookContent, BookData,
   BookInfo, BooksContainer, BookTitle,
   Container, Content,
-  Footer, FooterButtons,
 } from './style';
 import undefinedImage from '../../assets/images/undefined.png';
-import { NextButton } from '../../components/HomeButtons/NextButton';
-import { BackButton } from '../../components/HomeButtons/BackButton';
 import { OpenedBook } from '../../components/OpenedBook/OpenedBook';
 import api from '../../services/api';
 
 import Swal from 'sweetalert2';
 import { HomeHeader } from '../../components/HomeHeader/HomeHeader';
+import { HomeFooter } from '../../components/HomeFooter/HomeFooter';
 
 export function Home() {
   const { auth, logout, login } = useAuth();
@@ -224,10 +222,8 @@ export function Home() {
           bookInfo={bookInfo}
           bookAuthors={bookAuthors}
         />
-
         <Content>
           <HomeHeader name={auth.name} />
-
           <BooksContainer>
             {!booksData ? '' :
               booksData.map((book) =>
@@ -251,21 +247,15 @@ export function Home() {
                 </Book>
               )}
           </BooksContainer>
-          <Footer >
-            {totalPages && pageNumber ?
-              <h1>Página {pageNumber} de {totalPages}</h1> : ''
-            }
-            <FooterButtons >
-              <BackButton
-                isFirstPage={isFirstPage}
-                onClick={(e) => handleChangePage(e, pageNumber - 1)}
-                disabled={backDisabled} />
-              <NextButton
-                isLastPage={isLastPage}
-                onClick={(e) => handleChangePage(e, pageNumber + 1)}
-                disabled={nextDisabled} />
-            </FooterButtons>
-          </Footer>
+          <HomeFooter
+            totalPages={totalPages}
+            pageNumber={pageNumber}
+            isFirstPage={isFirstPage}
+            backDisabled={backDisabled}
+            isLastPage={isLastPage}
+            nextDisabled={nextDisabled}
+            handleChangePage={handleChangePage}
+          />
         </Content>
       </Container>
     </>
