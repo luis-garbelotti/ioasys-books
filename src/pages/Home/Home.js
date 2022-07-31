@@ -16,6 +16,7 @@ import undefinedImage from '../../assets/images/undefined.png';
 import { NextButton } from '../../components/HomeButtons/NextButton';
 import { BackButton } from '../../components/HomeButtons/BackButton';
 import Swal from 'sweetalert2';
+import { OpenedBook } from '../../components/OpenedBook/OpenedBook';
 
 export function Home() {
   const { auth, logout } = useAuth();
@@ -27,6 +28,9 @@ export function Home() {
   const [isLastPage, setIsLastPage] = useState(false);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [backDisabled, setBackDisabled] = useState(true);
+  const [isBookOpen, setIsBookOpen] = useState(false);
+  const [bookInfo, setBookInfo] = useState();
+  const [bookAuthors, setBookAuthors] = useState();
 
   // eslint-disable-next-line space-before-function-paren
   useEffect(async () => {
@@ -56,53 +60,6 @@ export function Home() {
 
       handlePages(page, maxPages);
     } catch (error) {
-      // se erro 401, refresh-token
-    }
-  }
-
-  function handlePages(page, maxPages) {
-    setPageNumber(page);
-    setTotalPages(maxPages);
-
-    if (page !== 1) {
-      setIsFirstPage(false);
-    }
-    if (pageNumber === maxPages) {
-      setIsLastPage(true);
-    }
-  }
-
-  async function handleChangePage(e, newPage) {
-    e.preventDefault();
-
-    if (newPage === 0) {
-      return;
-    }
-
-    if (newPage === totalPages + 1) {
-      return;
-    }
-
-    if (pageNumber === 1 || newPage === 1) {
-      setIsFirstPage(true);
-      setBackDisabled(true);
-    }
-
-    if (newPage === totalPages) {
-      setNextDisabled(true);
-      setIsLastPage(true);
-    }
-
-    const nextPage = newPage;
-    try {
-      const promise = await api.changePage(nextPage, auth.token);
-      setBooksData(promise.data);
-      setBackDisabled(false);
-      setNextDisabled(false);
-
-      handlePages(promise.page, totalPages);
-    } catch (error) {
-      console.log(error);
       if (error.response.status === 400) {
         Swal.fire({
           icon: 'error',
@@ -132,6 +89,127 @@ export function Home() {
     }
   }
 
+  function handlePages(page, maxPages) {
+    setPageNumber(page);
+    setTotalPages(maxPages);
+
+    if (page !== 1) {
+      setIsFirstPage(false);
+    }
+    if (pageNumber === maxPages) {
+      setIsLastPage(true);
+    }
+  }
+
+  async function handleChangePage(e, newPage) {
+    e.preventDefault();
+    const nextPage = newPage;
+
+    if (newPage === 0) {
+      return;
+    }
+
+    if (newPage === totalPages + 1) {
+      return;
+    }
+
+    if (pageNumber === 1 || newPage === 1) {
+      setIsFirstPage(true);
+      setBackDisabled(true);
+    }
+
+    if (newPage === totalPages) {
+      setNextDisabled(true);
+      setIsLastPage(true);
+    }
+
+    try {
+      const promise = await api.changePage(nextPage, auth.token);
+      setBooksData(promise.data);
+      setBackDisabled(false);
+      setNextDisabled(false);
+
+      handlePages(promise.page, totalPages);
+    } catch (error) {
+      if (error.response.status === 400) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${error.response.data.errors.message}`,
+        });
+        return;
+      }
+
+      if (error.response.status === 500) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${error.response.data.errors.message}`,
+        });
+        return;
+      }
+
+      if (error.response.status === 401) { // refresh-token
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${error.response.data.errors.message}`,
+        });
+        return;
+      }
+    }
+  }
+
+  async function handleOpenBook(e, bookId) {
+    e.preventDefault();
+
+    try {
+      const promise = await api.getBookInfo(bookId, auth.token);
+      formatAuthors(promise.authors);
+      setBookInfo(promise);
+      setIsBookOpen(true);
+    } catch (error) {
+      if (error.response.status === 404) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${error.response.data.errors.message}`,
+        });
+        return;
+      }
+
+      if (error.response.status === 500) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${error.response.data.errors.message}`,
+        });
+        return;
+      }
+
+      if (error.response.status === 401) { // refresh-token
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${error.response.data.errors.message}`,
+        });
+        return;
+      }
+    }
+  }
+
+  function formatAuthors(authors) {
+    let formatedAuthors = '';
+    for (let i = 0; i < authors.length; i++) {
+      if (i === authors.length - 1) {
+        formatedAuthors += authors[i];
+        setBookAuthors(formatedAuthors);
+        return;
+      }
+      formatedAuthors += authors[i] + ', ';
+    }
+  };
+
   function handleLogout() {
     logout();
     navigate('/');
@@ -140,15 +218,20 @@ export function Home() {
   return (
     <>
       <Container>
+        <OpenedBook
+          isOpen={isBookOpen}
+          setIsBookOpen={setIsBookOpen}
+          bookInfo={bookInfo}
+          bookAuthors={bookAuthors}
+        />
+
         <Content>
           <Header>
             <BlackLogo />
             <HeaderInfos>
               <HeaderText>
                 {auth?.name ?
-                  <>
-                    <span>Bem vindo, <strong>{auth.name}!</strong></span>
-                  </>
+                  <span>Bem vindo, <strong>{auth.name}!</strong></span>
                   :
                   ''
                 }
@@ -162,7 +245,7 @@ export function Home() {
           <BooksContainer>
             {!booksData ? '' :
               booksData.map((book) =>
-                <Book key={book.id}>
+                <Book key={book.id} onClick={(e) => handleOpenBook(e, book.id)}>
                   <BookContent>
                     <img src={book.imageUrl ? book.imageUrl : undefinedImage} />
                     <BookInfo>

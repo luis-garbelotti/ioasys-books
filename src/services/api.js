@@ -28,10 +28,17 @@ async function changePage(page, token) {
   return promise.data;
 }
 
+async function getBookInfo(bookId, token) {
+  console.log(bookId);
+  const promise = await axios.get(`${BASE_URL}/books/${bookId}`, createConfig(token));
+  return promise.data;
+}
+
 const api = {
   signIn,
   getBooks,
   changePage,
+  getBookInfo,
 };
 
 export default api;

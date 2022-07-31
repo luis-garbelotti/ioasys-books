@@ -8,3 +8,12 @@
 body {
   font-family: 'Heebo', sans-serif;
 }
+
+*::-webkit-scrollbar {
+  width: 4px;               /* width of the entire scrollbar */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #AB2680;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+}

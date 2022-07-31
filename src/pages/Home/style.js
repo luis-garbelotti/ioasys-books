@@ -11,7 +11,10 @@ const Container = styled.div`
   background-origin: content-box;
   
   display: flex;
+  flex-direction: column;
   align-items: center;
+
+  position: relative;
 
   @media(max-width: 576px) {
     justify-content: center;
@@ -41,7 +44,7 @@ const Logout = styled.div`
   width: 32px;
   height: 32px;
 
-  border: 1px solid rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(51, 51, 51, 0.2);
 
   border-radius: 40px;
 `;
