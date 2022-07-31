@@ -12,10 +12,12 @@ export function HomeFooter({ totalPages, pageNumber, isFirstPage, backDisabled, 
       }
       <FooterButtons >
         <BackButton
+          name='back'
           isFirstPage={isFirstPage}
           onClick={(e) => handleChangePage(e, pageNumber - 1)}
           disabled={backDisabled} />
         <NextButton
+          name='next'
           isLastPage={isLastPage}
           onClick={(e) => handleChangePage(e, pageNumber + 1)}
           disabled={nextDisabled} />

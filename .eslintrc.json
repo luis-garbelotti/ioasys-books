@@ -4,7 +4,10 @@
         "es2021": true,
         "es6": true
     },
-    "extends": "plugin:react/recommended",
+    "extends": [
+        "plugin:react/recommended",
+        "plugin:cypress/recommended"
+    ],
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -13,9 +16,11 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "cypress"
     ],
     "rules": {
+        "jest/expect-expect": "off",
         "react/prop-types": "off",
         "react/react-in-jsx-scope": "off",
         "indent": [

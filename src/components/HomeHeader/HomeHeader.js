@@ -27,7 +27,7 @@ export function HomeHeader({ name }) {
             ''
           }
         </HeaderText>
-        <Logout onClick={handleLogout}>
+        <Logout data-testid='logout' onClick={handleLogout} >
           <FiLogOut />
         </Logout>
       </HeaderInfos>

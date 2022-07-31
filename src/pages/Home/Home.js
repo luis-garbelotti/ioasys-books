@@ -223,7 +223,7 @@ export function Home() {
           bookAuthors={bookAuthors}
         />
         <Content>
-          <HomeHeader name={auth.name} />
+          <HomeHeader name={auth?.name} />
           <BooksContainer>
             {!booksData ? '' :
               booksData.map((book) =>
