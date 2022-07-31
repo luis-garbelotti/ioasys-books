@@ -51,11 +51,24 @@ const Content = styled.div`
   border-radius: 4px;
 
   background-color: #fff;
+
+  @media(max-width: 850px) {
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const BookImage = styled.img`
   width: 349px;
   height: 100%;
+  box-shadow: 0px 8px 17px 5px rgba(0, 0, 0, 0.3);
+
+  @media(max-width: 850px) {
+    width: 100%;
+  }
 `;
 
 const BookData = styled.div`
@@ -64,6 +77,11 @@ const BookData = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  @media(max-width: 850px) {
+    width: 100%;
+    margin-top: 24px;
+  }
 `;
 
 const BookTitle = styled.h1`
@@ -72,6 +90,26 @@ const BookTitle = styled.h1`
   line-height: 40px;
   letter-spacing: 0em;
   text-align: left;
+
+  @supports (-webkit-line-clamp: 2) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: initial;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+  @media(max-width: 850px) {
+    @supports (-webkit-line-clamp: 2) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: initial;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+  }
 `;
 
 const BookAuthors = styled.div`
@@ -152,6 +190,12 @@ const BookDescription = styled.div`
     left: 0;
 
     position: absolute;
+  }
+
+  @media(max-width: 850px) {
+    width: 100%;
+    height: auto;
+    padding: 0;
   }
 `;
 
