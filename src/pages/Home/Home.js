@@ -1,22 +1,21 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+
 import {
   Book, BookAuthor, BookContent, BookData,
   BookInfo, BooksContainer, BookTitle,
   Container, Content,
   Footer, FooterButtons,
-  Header, HeaderInfos, HeaderText,
-  Logout
 } from './style';
-import { BlackLogo } from '../../components/Logo/BlackLogo';
-import useAuth from '../../hooks/useAuth';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FiLogOut } from 'react-icons/fi';
-import api from '../../services/api';
 import undefinedImage from '../../assets/images/undefined.png';
 import { NextButton } from '../../components/HomeButtons/NextButton';
 import { BackButton } from '../../components/HomeButtons/BackButton';
-import Swal from 'sweetalert2';
 import { OpenedBook } from '../../components/OpenedBook/OpenedBook';
+import api from '../../services/api';
+
+import Swal from 'sweetalert2';
+import { HomeHeader } from '../../components/HomeHeader/HomeHeader';
 
 export function Home() {
   const { auth, logout, login } = useAuth();
@@ -203,7 +202,6 @@ export function Home() {
       };
 
       const promise = await api.refreshToken(body);
-      console.log(promise);
       const newAuth = {
         ...auth,
         token: promise.authorization,
@@ -217,11 +215,6 @@ export function Home() {
     }
   }
 
-  function handleLogout() {
-    logout();
-    navigate('/');
-  }
-
   return (
     <>
       <Container>
@@ -233,21 +226,7 @@ export function Home() {
         />
 
         <Content>
-          <Header>
-            <BlackLogo />
-            <HeaderInfos>
-              <HeaderText>
-                {auth?.name ?
-                  <span>Bem vindo, <strong>{auth.name}!</strong></span>
-                  :
-                  ''
-                }
-              </HeaderText>
-              <Logout onClick={handleLogout}>
-                <FiLogOut />
-              </Logout>
-            </HeaderInfos>
-          </Header>
+          <HomeHeader name={auth.name} />
 
           <BooksContainer>
             {!booksData ? '' :

@@ -31,6 +31,7 @@ export function SignIn() {
     if (auth) {
       navigate('/home');
     }
+    setForm({ email: '', password: '' });
   }, []);
 
   function handleInputChange(e) {
