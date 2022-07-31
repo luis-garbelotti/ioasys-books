@@ -29,8 +29,8 @@ async function changePage(page, token) {
 }
 
 async function getBookInfo(bookId, token) {
-  console.log(bookId);
   const promise = await axios.get(`${BASE_URL}/books/${bookId}`, createConfig(token));
+
   return promise.data;
 }
 
