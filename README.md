@@ -49,21 +49,18 @@ Ioasys Books is an application to find information about different books!
 # Clone this repo
 $ git clone git@github.com:luis-garbelotti/ioasys-books.git
 
-# Clone the back-end repository and follow the instructions to run
-$ git clone https://github.com/starunz/Linkr-Backend.git
-
-# change to project directory
+# Change to project directory
 $ cd ioasys-books
 
-# install the dependencies
+# Install the dependencies
 $ npm or yarn install
 
-# set .env file (follow .env.example) with the URL bellow
+# Set .env file (follow .env.example) with the URL bellow
 https://books.ioasys.com.br/api/v1
 
-# to run in dev
+# To run in dev
 $ npm start
 
-# you can try tests with cypress
+# You can try tests with cypress
 $ npx cypress open
 ```
