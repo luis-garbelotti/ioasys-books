@@ -8,7 +8,7 @@ export function HomeFooter({ totalPages, pageNumber, isFirstPage, backDisabled, 
   return (
     <Footer >
       {totalPages && pageNumber ?
-        <h1>Página {pageNumber} de {totalPages}</h1> : ''
+        <h1>Página <strong>{pageNumber}</strong> de <strong>{totalPages}</strong></h1> : ''
       }
       <FooterButtons >
         <BackButton
