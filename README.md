@@ -3,13 +3,13 @@
 <h1 >  Ioasys Books  🔗  &nbsp  </h1><br>
 
 <div align="center">
-  <a href="https://ioasys-books-amber.vercel.app">
+  <a href="https://ioasys-books-amber.vercel.app" target="_blank">
     <img  width="100" src="./src/assets/images/Logo.png">
   </a>
-  <h1>Books</h1>
+  <h2>Books</h2>
   <p align="center">Try it:</p>
   <p align="center">
-    <a  href="https://ioasys-books-amber.vercel.app">Ioasys Books - vercel</a>
+    <a  href="https://ioasys-books-amber.vercel.app" target="_blank">Ioasys Books - vercel</a>
   </p>
 </div>
 
