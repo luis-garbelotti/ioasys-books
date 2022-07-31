@@ -13,6 +13,8 @@ const ButtonContainer = styled.button`
   border: 1px solid rgba(51, 51, 51, 0.2);
 
   border-radius: 30px;
+
+  cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'}
 `;
 
 export {

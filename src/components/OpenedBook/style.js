@@ -31,6 +31,8 @@ const Header = styled.div`
 const CloseButton = styled.button`
   width: 32px;
   height: 32px;
+  
+  cursor: pointer;
 
   background-color: #fff;
 
