@@ -91,14 +91,13 @@ export function Home() {
     if (page !== 1) {
       setIsFirstPage(false);
     }
-    if (pageNumber === maxPages) {
+    if (page === maxPages) {
       setIsLastPage(true);
     }
   }
 
   async function handleChangePage(e, newPage) {
     e.preventDefault();
-    const nextPage = newPage;
 
     if (newPage === 0) {
       return;
@@ -108,21 +107,23 @@ export function Home() {
       return;
     }
 
-    if (pageNumber === 1 || newPage === 1) {
-      setIsFirstPage(true);
-      setBackDisabled(true);
-    }
-
-    if (newPage === totalPages) {
-      setNextDisabled(true);
-      setIsLastPage(true);
-    }
-
     try {
-      const promise = await api.changePage(nextPage, auth.token);
+      const promise = await api.changePage(newPage, auth.token);
       setBooksData(promise.data);
       setBackDisabled(false);
       setNextDisabled(false);
+      setIsLastPage(false);
+      setIsFirstPage(false);
+
+      if (promise.page === 1 || newPage === 1) {
+        setIsFirstPage(true);
+        setBackDisabled(true);
+      }
+
+      if (promise.page === totalPages) {
+        setNextDisabled(true);
+        setIsLastPage(true);
+      }
 
       handlePages(promise.page, totalPages);
     } catch (error) {
